@@ -43,7 +43,7 @@ class WeatherApp {
         if (!newLocation)
             return;
 
-        const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${newLocation}&limit=1&appid=${this.OW_apiKey}`;
+        const apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${newLocation}&limit=1&appid=${this.OW_apiKey}`;
 
 
         this.sendRequest(apiUrl, (data) => {
@@ -67,7 +67,7 @@ class WeatherApp {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
-                        const apiUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=${this.OW_apiKey}`;
+                        const apiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=${this.OW_apiKey}`;
     
                         this.sendRequest(apiUrl, (data) => {
                             if (data.length === 0) {

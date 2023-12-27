@@ -65,6 +65,8 @@ class WeatherApp {
     async getLocation() {
         return new Promise((resolve, reject) => {
             if (navigator.geolocation) {
+                this.startLoading();
+
                 navigator.geolocation.getCurrentPosition(
                     position => {
                         const apiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=${this.OW_apiKey}`;

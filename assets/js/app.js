@@ -32,7 +32,7 @@ class WeatherApp {
             icon:           document.querySelector('.current-weather-icon'),
             wind:           document.querySelector('.current-wind'),
             humidity:       document.querySelector('.current-humidity'),
-            uv:             document.querySelector('.current-uv'),
+            precipitation:  document.querySelector('.current-precipitation'),
             pressure:       document.querySelector('.current-pressure'),
             dailyForecast:  document.querySelector('.daily-forecast'),
             hourlyForecast: document.querySelector('.hourly-forecast'),
@@ -125,7 +125,15 @@ class WeatherApp {
         this.containers.city.innerText = name;
         this.containers.temperature.innerText = this.kelvinToCelcius(main.temp);
         this.containers.humidity.innerText = main.humidity + "%";
-        this.containers.uv.innerText = "0.16";
+
+        this.containers.precipitation.innerText = "0 mm";
+
+        if ('rain' in this.weather.current && '1h' in this.weather.current.rain) 
+            this.containers.precipitation.innerText = this.weather.current.rain['1h'] + " mm";
+
+        if ('snow' in this.weather.current && '1h' in this.weather.current.snow) 
+            this.containers.precipitation.innerText = this.weather.current.snow['1h'] + " mm";
+
         this.containers.pressure.innerText = this.hPaToMmHg(main.pressure);
         this.containers.wind.innerText = Math.round(wind.speed) + " m/s";
 
@@ -275,7 +283,7 @@ class WeatherApp {
         this.containers.city.innerText = '-';
         this.containers.temperature.innerText = '-°';
         this.containers.humidity.innerText = "-%";
-        this.containers.uv.innerText = "-.--";
+        this.containers.precipitation.innerText = "-.- mm";
         this.containers.pressure.innerText = '- mmHg';
         this.containers.wind.innerText = "- m/s";
 

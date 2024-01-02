@@ -150,7 +150,11 @@ class WeatherApp {
             const tempMax = this.kelvinToCelcius(main.temp_min);
             const temp = tempMin === tempMin ? tempMin : `${tempMin}/${tempMax}`;
 
-            dayForecastCards.push(this.createDailyCard(weather[0].icon, displayDayName, weather[0].main, temp));
+            const card = this.createDailyCard(weather[0].icon, displayDayName, weather[0].main, temp);
+
+            this.handleClickOnDailyCard(card, dayForecast);
+
+            dayForecastCards.push(card);
         });
         
         this.containers.dailyForecast.innerHTML = '';
@@ -159,7 +163,7 @@ class WeatherApp {
         const hourlyForecastCards = [];
 
         // Get first 3 hours of first day
-        list.slice(0, 3).forEach(hourlyForecast => {
+        list.slice(0, 4).forEach(hourlyForecast => {
             const { name, main, weather, wind } = hourlyForecast;
 
             const forecastDate = new Date(hourlyForecast.dt_txt);
@@ -170,6 +174,41 @@ class WeatherApp {
         
         this.containers.hourlyForecast.innerHTML = '';
         this.containers.hourlyForecast.append(...hourlyForecastCards);
+    }
+
+    handleClickOnDailyCard(card, currentForecast) {
+        const { list } = this.weather.forecast;
+
+        const currentDate = currentForecast.dt_txt.split(' ')[0];
+
+        const hourlyForecastOfSameDate = list.filter(forecast => {
+            const date = forecast.dt_txt.split(' ')[0];
+
+            return date === currentDate;
+        });
+
+        const hourlyForecastCards = [];
+
+        // Get first 3 hours of first day
+        hourlyForecastOfSameDate.slice(0, 4).forEach(hourlyForecast => {
+            const { name, main, weather, wind } = hourlyForecast;
+
+            const forecastDate = new Date(hourlyForecast.dt_txt);
+            const forecastTime = `${forecastDate.getHours()}:00`;
+
+            hourlyForecastCards.push(this.createHourlyCard(weather[0].icon, forecastTime, weather[0].main, this.kelvinToCelcius(main.temp)));
+        });
+        
+        card.querySelector('.list').innerHTML = '';
+        card.querySelector('.list').append(...hourlyForecastCards);
+
+        card.addEventListener('click', () => {
+            if (card.classList.contains('is-active')) {
+                card.classList.remove('is-active');
+            } else {
+                card.classList.add('is-active');
+            }
+        });
     }
 
     createDailyCard(icon, day, condition, temp) {
@@ -186,7 +225,11 @@ class WeatherApp {
                             <div class="details">${condition} ${temp}</div>
                         </div>
                     </div>
+                    <div class="col no-grow">
+                        <i class="icon i-chevron-down"></i>
+                    </div>
                 </div>
+                <div class="row narrow is-mobile align-items-center list"></div>
             `;
 
         return card;

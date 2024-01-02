@@ -6,7 +6,21 @@ class WeatherApp {
         this.imageBase = "assets/icons/";
 
         this.currentLocation = JSON.parse(localStorage.getItem('currentLocation')) || null;
-        this.weather = JSON.parse(localStorage.getItem('weather')) || null;
+        this.weather = null;
+
+        const weather = localStorage.getItem('weather');
+        const lastModifiedString = localStorage.getItem('weather.lastModifiedDate');
+
+        if (weather && lastModifiedString) {
+            const lastModifiedDate = new Date(lastModifiedString);
+            const currentDateTime = new Date();
+
+            const timeDifferenceInMintues = (currentDateTime - lastModifiedDate) / (1000 * 60);
+
+            if (timeDifferenceInMintues < 2) {
+                this.weather = JSON.parse(weather);
+            }
+        }
         
         this.initialize();
     }
@@ -305,6 +319,7 @@ class WeatherApp {
         });
 
         localStorage.setItem('weather', JSON.stringify(this.weather));
+        localStorage.setItem('weather.lastModifiedDate', new Date().toISOString());
     }
 
     async sendRequest(url, callback) {

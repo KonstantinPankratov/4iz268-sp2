@@ -115,8 +115,10 @@ class WeatherApp {
         this.containers.pressure.innerText = this.hPaToMmHg(main.pressure);
         this.containers.wind.innerText = Math.round(wind.speed) + " m/s";
 
-        if (weather.length !== 0)
+        if (weather.length !== 0) {
             this.containers.icon.src = `${this.imageBase}${weather[0].icon}.svg`;
+            this.containers.icon.alt = weather[0].main;
+        }
         
         if (!this.weather.forecast)
             return;
@@ -176,7 +178,7 @@ class WeatherApp {
             card.innerHTML = `
                 <div class="row is-mobile align-items-center">
                     <div class="col no-grow">
-                        <img class="weather-icon" src="${this.imageBase}${icon}.svg">
+                        <img class="weather-icon" src="${this.imageBase}${icon}.svg" width="75" height="75" alt="${condition}">
                     </div>
                     <div class="col">
                         <div class="content">
@@ -195,7 +197,7 @@ class WeatherApp {
             card.classList.add('col');
             card.innerHTML = `
             <div class="card">
-                <img class="weather-icon" src="${this.imageBase}${icon}.svg">
+                <img class="weather-icon" src="${this.imageBase}${icon}.svg" width="75" height="75" alt="${condition}">
                 <div class="content">
                     <div class="time">${time}</div>
                     <div class="details">${condition} ${temp}</div>

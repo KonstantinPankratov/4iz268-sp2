@@ -225,6 +225,11 @@ class WeatherApp {
         card.querySelector('.list').append(...hourlyForecastCards);
 
         card.addEventListener('click', () => {
+            const activeCard = document.querySelector('.daily-forecast .card.is-active');
+
+            if (activeCard && !card.isSameNode(activeCard))
+                activeCard.classList.remove('is-active');
+
             if (card.classList.contains('is-active')) {
                 card.classList.remove('is-active');
             } else {

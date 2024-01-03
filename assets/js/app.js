@@ -2,8 +2,8 @@ class WeatherApp {
     constructor() {
         this.promises = [];
 
-        this.OW_apiKey = "8d2a03967c6f43b733b30521f6d22732";
-        this.imageBase = "assets/icons/";
+        this.OW_apiKey = '8d2a03967c6f43b733b30521f6d22732';
+        this.imageBase = 'assets/icons/';
 
         this.currentLocation = JSON.parse(localStorage.getItem('currentLocation')) || null;
         this.weather = null;
@@ -62,7 +62,7 @@ class WeatherApp {
 
         this.sendRequest(apiUrl, (data) => {
             if (data.length === 0) {
-                throw new Error("City not found. Please set the city manually.");
+                throw new Error('City not found. Please set the city manually.');
                 return;
             }
             this.currentLocation = {};
@@ -87,7 +87,7 @@ class WeatherApp {
     
                         this.sendRequest(apiUrl, (data) => {
                             if (data.length === 0) {
-                                throw new Error("City not found. Please set the city manually.");
+                                throw new Error('City not found. Please set the city manually.');
                                 return;
                             }
                             this.currentLocation = {
@@ -104,7 +104,7 @@ class WeatherApp {
                     }
                 );
             } else {
-                this.pushError("Geolocation API is not supported by this browser. Please set the city manually.");
+                this.pushError('Geolocation API is not supported by this browser. Please set the city manually.');
             }
         });
     }
@@ -124,18 +124,18 @@ class WeatherApp {
 
         this.containers.city.innerText = name;
         this.containers.temperature.innerText = this.kelvinToCelcius(main.temp);
-        this.containers.humidity.innerText = main.humidity + "%";
+        this.containers.humidity.innerText = main.humidity + '%';
 
-        this.containers.precipitation.innerText = "0 mm";
+        this.containers.precipitation.innerText = '0 mm';
 
         if ('rain' in this.weather.current && '1h' in this.weather.current.rain) 
-            this.containers.precipitation.innerText = this.weather.current.rain['1h'] + " mm";
+            this.containers.precipitation.innerText = this.weather.current.rain['1h'] + ' mm';
 
         if ('snow' in this.weather.current && '1h' in this.weather.current.snow) 
-            this.containers.precipitation.innerText = this.weather.current.snow['1h'] + " mm";
+            this.containers.precipitation.innerText = this.weather.current.snow['1h'] + ' mm';
 
         this.containers.pressure.innerText = this.hPaToMmHg(main.pressure);
-        this.containers.wind.innerText = Math.round(wind.speed) + " m/s";
+        this.containers.wind.innerText = Math.round(wind.speed) + ' m/s';
 
         if (weather.length !== 0) {
             this.containers.icon.src = `${this.imageBase}${weather[0].icon}.svg`;
@@ -166,7 +166,7 @@ class WeatherApp {
             const nowDate = new Date();
             const nowDayName = this.getDayName(nowDate.getDay());
 
-            const displayDayName = nowDayName === forecastDayName ? "Today" : forecastDayName;
+            const displayDayName = nowDayName === forecastDayName ? 'Today' : forecastDayName;
 
             const tempMin = this.kelvinToCelcius(main.temp_max);
             const tempMax = this.kelvinToCelcius(main.temp_min);
@@ -287,10 +287,10 @@ class WeatherApp {
 
         this.containers.city.innerText = '-';
         this.containers.temperature.innerText = '-°';
-        this.containers.humidity.innerText = "-%";
+        this.containers.humidity.innerText = '-%';
         this.containers.precipitation.innerText = "-.- mm";
         this.containers.pressure.innerText = '- mmHg';
-        this.containers.wind.innerText = "- m/s";
+        this.containers.wind.innerText = '- m/s';
 
         this.containers.icon.src = `${this.imageBase}${dummyIcon}.svg`;
         
@@ -364,11 +364,11 @@ class WeatherApp {
     }
 
     kelvinToCelcius(tempInKelvin) {
-        return Math.round(tempInKelvin - 273.15) + "°";
+        return Math.round(tempInKelvin - 273.15) + '°';
     }
 
     hPaToMmHg(pressureInHPa) {
-        return Math.round(pressureInHPa * 0.75006) + " mmHg";
+        return Math.round(pressureInHPa * 0.75006) + ' mmHg';
     }
 
     pushError(msg) {
